@@ -8,7 +8,8 @@ find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
 # add the executable
-add_executable(shitty_tetris src/main.cpp)
+file(GLOB SOURCES src/*.cpp)
+add_executable(shitty_tetris ${SOURCES})
 target_include_directories(shitty_tetris PUBLIC
                           "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(shitty_tetris ${SDL2_LIBRARIES})

@@ -1,8 +1,13 @@
 #include <iostream>
 #include <SDL.h>
 
-int main()
+#include "Game.hpp"
+
+int main(int arc, char **argv)
 {
-    std::cout << "Hello" << std::endl;
+    Game mainGame;
+
+    mainGame.run();
+
     return 0;
 }
