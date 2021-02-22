@@ -14,12 +14,16 @@ Game::Game()
 {
     _window = nullptr;
     _screenSurface = nullptr;
+    _renderer = nullptr;
     _screen_width = 1024;
     _screen_height = 768;
     _gameState = GameState::RUNNING;
 }
 Game::~Game()
 {
+    SDL_FreeSurface(_screenSurface);
+    SDL_DestroyRenderer(_renderer);
+    SDL_DestroyWindow(_window);
 }
 
 void Game::run()
@@ -30,18 +34,19 @@ void Game::run()
 void Game::init()
 {
     //Init SDL
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_EVERYTHING);
 
     _window = SDL_CreateWindow("Shitty Tetris", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screen_width, _screen_height, SDL_WINDOW_SHOWN);
     if (_window == nullptr)
     {
         fatalError("SDL Window could not be created");
     }
+    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
     _screenSurface = SDL_GetWindowSurface(_window);
     SDL_FillRect(_screenSurface, NULL, SDL_MapRGB(_screenSurface->format, 0x13, 0x37, 0x45));
     SDL_UpdateWindowSurface(_window);
 }
-void Game::processInput()
+void Game::update()
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -61,7 +66,8 @@ void Game::gameLoop()
 {
     while (_gameState != GameState::EXIT)
     {
-        processInput();
+        update();
+        render();
     }
 }
 
