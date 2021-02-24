@@ -2,8 +2,8 @@
 
 int main(int arc, char **argv)
 {
-	Game mainGame;
+	Game main_game;
 
-	mainGame.run();
+	main_game.run();
 	return 0;
 }

@@ -16,7 +16,7 @@ Game::Game()
 	_renderer = nullptr;
 	_screen_width = 1024;
 	_screen_height = 768;
-	_gameState = GameState::RUNNING;
+	_game_state = GameState::RUNNING;
 }
 Game::~Game()
 {
@@ -41,68 +41,37 @@ void Game::init()
 		fatalError("SDL Window could not be created");
 	}
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+
+	//Init pieces
+	for (Tetromino t; t != Tetromino::NUMBER_OF_TETROMINOS; ++t) {
+		_pieces[static_cast<int>(t)] = new Piece(t);
+	}
 }
-void Game::update(Block &b)
+void Game::update()
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
 		case SDL_QUIT:
-			_gameState = GameState::EXIT;
-			break;
-		case SDL_MOUSEMOTION:
-			std::cout << e.motion.x << " " << e.motion.y
-				  << std::endl;
+			_game_state = GameState::EXIT;
 			break;
 		}
 	}
-	const uint8_t *currentKeyStates = SDL_GetKeyboardState(NULL);
-	if (currentKeyStates[SDL_SCANCODE_UP]) {
-		b.set_y_velocity(-10);
-		b.set_x_velocity(0);
-	} else if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-		b.set_y_velocity(10);
-		b.set_x_velocity(0);
-	} else if (currentKeyStates[SDL_SCANCODE_LEFT]) {
-		b.set_x_velocity(-10);
-		b.set_y_velocity(0);
-	} else if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
-		b.set_x_velocity(10);
-		b.set_y_velocity(0);
-	} else {
-		b.set_y_velocity(0);
-		b.set_x_velocity(0);
-	}
-	if ((b.get_x_position() + b.get_x_velocity() + b.get_width() <
-	     _screen_width) &&
-	    (b.get_x_position() + b.get_x_velocity() - b.get_height() > -1)) {
-		b.set_x_position(b.get_x_position() + b.get_x_velocity());
-	}
-	if ((b.get_y_position() + b.get_y_velocity() + b.get_height() <
-	     _screen_height) &&
-	    (b.get_y_position() + b.get_y_velocity() - b.get_height() > -1)) {
-		b.set_y_position(b.get_y_position() + b.get_y_velocity());
-	}
 }
 
-void Game::render(Block &b)
+void Game::render()
 {
 	//Clear screen
 	SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(_renderer);
-	SDL_Rect rect{ b.get_x_position(), b.get_y_position(), b.get_width(),
-		       b.get_height() };
-	SDL_SetRenderDrawColor(_renderer, 0xFF, 0x00, 0x00, 0xFF);
-	SDL_RenderFillRect(_renderer, &rect);
 	SDL_RenderPresent(_renderer);
 }
 
 void Game::gameLoop()
 {
-	Block b(10, 10);
-	while (_gameState != GameState::EXIT) {
-		update(b);
-		render(b);
+	while (_game_state != GameState::EXIT) {
+		update();
+		render();
 		SDL_Delay(16);
 	}
 }
