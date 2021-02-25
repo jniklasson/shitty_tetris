@@ -1,20 +1,22 @@
 #pragma once
 #include <string>
-#include <stdexcept>
 
-enum Tetromino {
-	BEGIN,
-	I_TETROMINO = BEGIN,
+enum class Tetromino {
+	I_TETROMINO,
 	O_TETROMINO,
 	T_TETROMINO,
 	J_TETROMINO,
 	L_TETROMINO,
 	S_TETROMINO,
 	Z_TETROMINO,
-	NUMBER_OF_TETROMINOS,
 };
 
-Tetromino &operator++(Tetromino &t);
+enum class Rotation {
+	ROT_0,
+	ROT_90,
+	ROT_180,
+	ROT_270,
+};
 
 class Piece {
     public:
@@ -31,11 +33,14 @@ class Piece {
 	int get_y_position();
 	int get_x_velocity();
 	int get_y_velocity();
+	Tetromino get_type();
+	void rotate(int angle);
+
+	std::string blocks;
 
     private:
 	const int _width = 4;
 	const int _height = 4;
-	std::string _blocks;
 	Tetromino _type;
 	int _pos_x;
 	int _pos_y;

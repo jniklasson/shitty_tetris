@@ -42,10 +42,14 @@ void Game::init()
 	}
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 
-	//Init pieces
-	for (Tetromino t; t != Tetromino::NUMBER_OF_TETROMINOS; ++t) {
-		_pieces[static_cast<int>(t)] = new Piece(t);
-	}
+	//init pieces
+	_pieces.emplace_back(new Piece(Tetromino::I_TETROMINO));
+	_pieces.emplace_back(new Piece(Tetromino::O_TETROMINO));
+	_pieces.emplace_back(new Piece(Tetromino::T_TETROMINO));
+	_pieces.emplace_back(new Piece(Tetromino::J_TETROMINO));
+	_pieces.emplace_back(new Piece(Tetromino::L_TETROMINO));
+	_pieces.emplace_back(new Piece(Tetromino::S_TETROMINO));
+	_pieces.emplace_back(new Piece(Tetromino::Z_TETROMINO));
 }
 void Game::update()
 {
@@ -64,6 +68,66 @@ void Game::render()
 	//Clear screen
 	SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(_renderer);
+	int count = 0;
+	for (auto const &p : _pieces) {
+		switch (p->get_type()) {
+		case Tetromino::I_TETROMINO:
+			SDL_SetRenderDrawColor(_renderer, 0x00, 0xFF, 0xFF,
+					       0xFF);
+			break;
+		case Tetromino::O_TETROMINO:
+			SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0x00,
+					       0xFF);
+			break;
+		case Tetromino::T_TETROMINO:
+			SDL_SetRenderDrawColor(_renderer, 0xFF, 0x00, 0xFF,
+					       0xFF);
+			break;
+		case Tetromino::J_TETROMINO:
+			SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0xFF,
+					       0xFF);
+			break;
+		case Tetromino::L_TETROMINO:
+			SDL_SetRenderDrawColor(_renderer, 0xFF, 0x7F, 0x50,
+					       0xFF);
+			break;
+		case Tetromino::S_TETROMINO:
+			SDL_SetRenderDrawColor(_renderer, 0x00, 0xFF, 0x00,
+					       0xFF);
+			break;
+		case Tetromino::Z_TETROMINO:
+			SDL_SetRenderDrawColor(_renderer, 0xFF, 0x00, 0x00,
+					       0xFF);
+			break;
+
+		default:
+			break;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				if (p->blocks[(i * 4) + j] != '.') {
+					SDL_Rect rect = { (count * 100) + 100 +
+								  i * 20,
+							  100 + j * 20, 20,
+							  20 };
+					SDL_RenderFillRect(_renderer, &rect);
+				}
+			}
+		}
+		count++;
+	}
+	/*
+	SDL_Rect rect = { 512, 384, 50, 50 };
+	SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0xFF, 0xFF);
+	SDL_RenderFillRect(_renderer, &rect);
+	rect.y += 50;
+	SDL_SetRenderDrawColor(_renderer, 0x00, 0xFF, 0x00, 0xFF);
+	SDL_RenderFillRect(_renderer, &rect);
+	rect.y += 50;
+	SDL_SetRenderDrawColor(_renderer, 0xFF, 0x00, 0x00, 0xFF);
+	SDL_RenderFillRect(_renderer, &rect);
+	*/
 	SDL_RenderPresent(_renderer);
 }
 

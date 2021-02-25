@@ -3,7 +3,6 @@
 #include <Piece.hpp>
 #include <Board.hpp>
 #include <vector>
-#include <array>
 
 enum class GameState {
 	RUNNING,
@@ -29,5 +28,5 @@ class Game {
 	int _screen_height;
 	GameState _game_state;
 	Board _board;
-	std::array<Piece *, 7> _pieces;
+	std::vector<Piece *> _pieces;
 };

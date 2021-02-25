@@ -17,46 +17,46 @@ Piece::Piece(Tetromino type)
 	_type = type;
 	switch (type) {
 	case Tetromino::I_TETROMINO:
-		_blocks.append("..#.");
-		_blocks.append("..#.");
-		_blocks.append("..#.");
-		_blocks.append("..#.");
+		blocks.append("..#.");
+		blocks.append("..#.");
+		blocks.append("..#.");
+		blocks.append("..#.");
 		break;
 	case Tetromino::O_TETROMINO:
-		_blocks.append("....");
-		_blocks.append(".##.");
-		_blocks.append(".##.");
-		_blocks.append("....");
+		blocks.append("....");
+		blocks.append(".##.");
+		blocks.append(".##.");
+		blocks.append("....");
 		break;
 	case Tetromino::T_TETROMINO:
-		_blocks.append("....");
-		_blocks.append("..#.");
-		_blocks.append("#.#.");
-		_blocks.append("..#.");
+		blocks.append("....");
+		blocks.append("..#.");
+		blocks.append(".##.");
+		blocks.append("..#.");
 		break;
 	case Tetromino::J_TETROMINO:
-		_blocks.append("...");
-		_blocks.append("..#.");
-		_blocks.append("..#.");
-		_blocks.append(".##.");
+		blocks.append("....");
+		blocks.append("..#.");
+		blocks.append("..#.");
+		blocks.append(".##.");
 		break;
 	case Tetromino::L_TETROMINO:
-		_blocks.append("....");
-		_blocks.append(".#..");
-		_blocks.append(".#..");
-		_blocks.append(".##.");
+		blocks.append("....");
+		blocks.append(".#..");
+		blocks.append(".#..");
+		blocks.append(".##.");
 		break;
 	case Tetromino::S_TETROMINO:
-		_blocks.append("....");
-		_blocks.append(".###");
-		_blocks.append("###.");
-		_blocks.append("....");
+		blocks.append("....");
+		blocks.append("..##");
+		blocks.append(".##.");
+		blocks.append("....");
 		break;
 	case Tetromino::Z_TETROMINO:
-		_blocks.append("....");
-		_blocks.append("###.");
-		_blocks.append(".###");
-		_blocks.append("....");
+		blocks.append("....");
+		blocks.append(".##.");
+		blocks.append("..##");
+		blocks.append("....");
 		break;
 	default:
 		break;
@@ -112,14 +112,7 @@ int Piece::get_y_velocity()
 {
 	return _vel_y;
 }
-
-Tetromino &operator++(Tetromino &t)
+Tetromino Piece::get_type()
 {
-	if (t == Tetromino::NUMBER_OF_TETROMINOS) {
-		throw std::out_of_range(
-			"for Tetromino& operator ++ (Tetormino&)");
-	}
-	t = Tetromino(static_cast<std::underlying_type<Tetromino>::type>(t) +
-		      1);
-	return t;
+	return _type;
 }
