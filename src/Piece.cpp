@@ -1,4 +1,5 @@
 #include "Piece.hpp"
+#include <SDL2/SDL.h>
 
 Piece::Piece()
 {
@@ -10,8 +11,8 @@ Piece::Piece()
 
 Piece::Piece(Tetromino type)
 {
-	_pos_x = 0;
-	_pos_y = 0;
+	_pos_x = 368;
+	_pos_y = -2 * _width;
 	_vel_x = 0;
 	_vel_y = 0;
 	_type = type;
@@ -69,12 +70,29 @@ Piece::~Piece()
 
 Piece &Piece::set_x_position(int pos_x)
 {
-	_pos_x = pos_x;
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	if (pos_x >= DM.w) {
+		_pos_x = DM.w;
+	} else if (pos_x <= 0) {
+		_pos_x = 0;
+	} else {
+		_pos_x = pos_x;
+	}
+
 	return *this;
 }
 Piece &Piece::set_y_position(int pos_y)
 {
-	_pos_y = pos_y;
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	if (pos_y >= DM.h) {
+		_pos_y = DM.h;
+	} else if (pos_y <= 0) {
+		_pos_y = 0;
+	} else {
+		_pos_y = pos_y;
+	}
 	return *this;
 }
 Piece &Piece::set_x_velocity(int vel_x)

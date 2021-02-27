@@ -9,6 +9,7 @@ enum class Tetromino {
 	L_TETROMINO,
 	S_TETROMINO,
 	Z_TETROMINO,
+	NUMBER_OF_TETROMINOS,
 };
 
 enum class Rotation {
@@ -39,8 +40,8 @@ class Piece {
 	std::string blocks;
 
     private:
-	const int _width = 4;
-	const int _height = 4;
+	const int _width = 50;
+	const int _height = 50;
 	Tetromino _type;
 	int _pos_x;
 	int _pos_y;

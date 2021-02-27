@@ -28,5 +28,5 @@ class Game {
 	int _screen_height;
 	GameState _game_state;
 	Board _board;
-	std::vector<Piece *> _pieces;
+	Piece *_active_piece;
 };
