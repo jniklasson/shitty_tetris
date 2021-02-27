@@ -5,59 +5,56 @@ Piece::Piece()
 {
 	_pos_x = 0;
 	_pos_y = 0;
-	_vel_x = 0;
-	_vel_y = 0;
 }
 
 Piece::Piece(Tetromino type)
 {
 	_pos_x = 368;
 	_pos_y = -2 * _width;
-	_vel_x = 0;
-	_vel_y = 0;
 	_type = type;
+	_rotation = Rotation::ROT_0;
 	switch (type) {
 	case Tetromino::I_TETROMINO:
-		blocks.append("..#.");
-		blocks.append("..#.");
-		blocks.append("..#.");
-		blocks.append("..#.");
+		_blocks.append("..#.");
+		_blocks.append("..#.");
+		_blocks.append("..#.");
+		_blocks.append("..#.");
 		break;
 	case Tetromino::O_TETROMINO:
-		blocks.append("....");
-		blocks.append(".##.");
-		blocks.append(".##.");
-		blocks.append("....");
+		_blocks.append("....");
+		_blocks.append(".##.");
+		_blocks.append(".##.");
+		_blocks.append("....");
 		break;
 	case Tetromino::T_TETROMINO:
-		blocks.append("....");
-		blocks.append("..#.");
-		blocks.append(".##.");
-		blocks.append("..#.");
+		_blocks.append("....");
+		_blocks.append("..#.");
+		_blocks.append(".##.");
+		_blocks.append("..#.");
 		break;
 	case Tetromino::J_TETROMINO:
-		blocks.append("....");
-		blocks.append("..#.");
-		blocks.append("..#.");
-		blocks.append(".##.");
+		_blocks.append("....");
+		_blocks.append("..#.");
+		_blocks.append("..#.");
+		_blocks.append(".##.");
 		break;
 	case Tetromino::L_TETROMINO:
-		blocks.append("....");
-		blocks.append(".#..");
-		blocks.append(".#..");
-		blocks.append(".##.");
+		_blocks.append("....");
+		_blocks.append(".#..");
+		_blocks.append(".#..");
+		_blocks.append(".##.");
 		break;
 	case Tetromino::S_TETROMINO:
-		blocks.append("....");
-		blocks.append("..##");
-		blocks.append(".##.");
-		blocks.append("....");
+		_blocks.append("....");
+		_blocks.append("..##");
+		_blocks.append(".##.");
+		_blocks.append("....");
 		break;
 	case Tetromino::Z_TETROMINO:
-		blocks.append("....");
-		blocks.append(".##.");
-		blocks.append("..##");
-		blocks.append("....");
+		_blocks.append("....");
+		_blocks.append(".##.");
+		_blocks.append("..##");
+		_blocks.append("....");
 		break;
 	default:
 		break;
@@ -95,14 +92,9 @@ Piece &Piece::set_y_position(int pos_y)
 	}
 	return *this;
 }
-Piece &Piece::set_x_velocity(int vel_x)
+Piece &Piece::set_rotation(Rotation rot)
 {
-	_vel_x = vel_x;
-	return *this;
-}
-Piece &Piece::set_y_velocity(int vel_y)
-{
-	_vel_y = vel_y;
+	_rotation = rot;
 	return *this;
 }
 int Piece::get_width()
@@ -122,15 +114,50 @@ int Piece::get_y_position()
 	return _pos_y;
 }
 
-int Piece::get_x_velocity()
+Rotation Piece::get_rotation()
 {
-	return _vel_x;
+	return _rotation;
 }
-int Piece::get_y_velocity()
+
+char Piece::get_block(int x, int y)
 {
-	return _vel_y;
+	switch (_rotation) {
+	case Rotation::ROT_0:
+		return _blocks[(x * 4) + y];
+		break;
+	case Rotation::ROT_90:
+		return _blocks[12 + x - (y * 4)];
+		break;
+	case Rotation::ROT_180:
+		return _blocks[15 - (x * 4) - y];
+		break;
+	case Rotation::ROT_270:
+		return _blocks[3 - x + (y * 4)];
+		break;
+	}
+	return _blocks[(x * 4) + y];
 }
+
 Tetromino Piece::get_type()
 {
 	return _type;
+}
+
+Rotation Piece::rotate()
+{
+	switch (_rotation) {
+	case Rotation::ROT_0:
+		_rotation = Rotation::ROT_90;
+		break;
+	case Rotation::ROT_90:
+		_rotation = Rotation::ROT_180;
+		break;
+	case Rotation::ROT_180:
+		_rotation = Rotation::ROT_270;
+		break;
+	case Rotation::ROT_270:
+		_rotation = Rotation::ROT_0;
+		break;
+	}
+	return _rotation;
 }

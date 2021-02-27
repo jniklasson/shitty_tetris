@@ -67,6 +67,9 @@ void Game::update()
 					_active_piece->get_x_position() +
 					_active_piece->get_width());
 				break;
+			case SDLK_x:
+				_active_piece->rotate();
+				break;
 			}
 		}
 	}
@@ -83,7 +86,7 @@ void Game::update()
 void Game::render()
 {
 	//Clear screen
-	SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(_renderer);
 	switch (_active_piece->get_type()) {
 	case Tetromino::I_TETROMINO:
@@ -114,7 +117,7 @@ void Game::render()
 	int x, y;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			if (_active_piece->blocks[(i * 4) + j] != '.') {
+			if (_active_piece->get_block(i, j) != '.') {
 				x = _active_piece->get_x_position() +
 				    i * _active_piece->get_width();
 				y = _active_piece->get_y_position() +

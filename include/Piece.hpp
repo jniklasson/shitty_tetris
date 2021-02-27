@@ -26,18 +26,15 @@ class Piece {
 	~Piece();
 	Piece &set_x_position(int pos_x);
 	Piece &set_y_position(int pos_y);
-	Piece &set_x_velocity(int vel_x);
-	Piece &set_y_velocity(int vel_y);
+	Piece &set_rotation(Rotation rot);
 	int get_width();
 	int get_height();
 	int get_x_position();
 	int get_y_position();
-	int get_x_velocity();
-	int get_y_velocity();
+	Rotation get_rotation();
+	char get_block(int x, int y);
 	Tetromino get_type();
-	void rotate(int angle);
-
-	std::string blocks;
+	Rotation rotate();
 
     private:
 	const int _width = 50;
@@ -45,6 +42,6 @@ class Piece {
 	Tetromino _type;
 	int _pos_x;
 	int _pos_y;
-	int _vel_x;
-	int _vel_y;
+	Rotation _rotation;
+	std::string _blocks;
 };
