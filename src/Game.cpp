@@ -18,6 +18,16 @@ Game::Game()
 	_screen_height = 768;
 	_game_state = GameState::RUNNING;
 }
+
+Game::Game(int w, int h)
+{
+	_window = nullptr;
+	_renderer = nullptr;
+	_screen_width = w;
+	_screen_height = h;
+	_game_state = GameState::RUNNING;
+}
+
 Game::~Game()
 {
 	SDL_DestroyRenderer(_renderer);
@@ -41,9 +51,7 @@ void Game::init()
 		fatalError("SDL Window could not be created");
 	}
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
-	std::cout << "Generating new piece of type: "
-		  << rand() % static_cast<int>(Tetromino::NUMBER_OF_TETROMINOS)
-		  << std::endl;
+	_board = new Board(10, 24);
 	_active_piece = new Piece(static_cast<Tetromino>(
 		rand() % static_cast<int>(Tetromino::NUMBER_OF_TETROMINOS)));
 }
@@ -60,12 +68,12 @@ void Game::update()
 			case SDLK_LEFT:
 				_active_piece->set_x_position(
 					_active_piece->get_x_position() -
-					_active_piece->get_width());
+					_active_piece->get_block_width());
 				break;
 			case SDLK_RIGHT:
 				_active_piece->set_x_position(
 					_active_piece->get_x_position() +
-					_active_piece->get_width());
+					_active_piece->get_block_width());
 				break;
 			case SDLK_x:
 				_active_piece->rotate();
@@ -80,7 +88,7 @@ void Game::update()
 			static_cast<int>(Tetromino::NUMBER_OF_TETROMINOS)));
 	}
 	_active_piece->set_y_position(_active_piece->get_y_position() +
-				      _active_piece->get_height());
+				      _active_piece->get_block_height());
 }
 
 void Game::render()
@@ -88,58 +96,8 @@ void Game::render()
 	//Clear screen
 	SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(_renderer);
-	switch (_active_piece->get_type()) {
-	case Tetromino::I_TETROMINO:
-		SDL_SetRenderDrawColor(_renderer, 0x00, 0xFF, 0xFF, 0xFF);
-		break;
-	case Tetromino::O_TETROMINO:
-		SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0x00, 0xFF);
-		break;
-	case Tetromino::T_TETROMINO:
-		SDL_SetRenderDrawColor(_renderer, 0xFF, 0x00, 0xFF, 0xFF);
-		break;
-	case Tetromino::J_TETROMINO:
-		SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0xFF, 0xFF);
-		break;
-	case Tetromino::L_TETROMINO:
-		SDL_SetRenderDrawColor(_renderer, 0xFF, 0x7F, 0x50, 0xFF);
-		break;
-	case Tetromino::S_TETROMINO:
-		SDL_SetRenderDrawColor(_renderer, 0x00, 0xFF, 0x00, 0xFF);
-		break;
-	case Tetromino::Z_TETROMINO:
-		SDL_SetRenderDrawColor(_renderer, 0xFF, 0x00, 0x00, 0xFF);
-		break;
+	_active_piece->render(_renderer);
 
-	default:
-		break;
-	}
-	int x, y;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			if (_active_piece->get_block(i, j) != '.') {
-				x = _active_piece->get_x_position() +
-				    i * _active_piece->get_width();
-				y = _active_piece->get_y_position() +
-				    j * _active_piece->get_height();
-				SDL_Rect rect = { x, y,
-						  _active_piece->get_width(),
-						  _active_piece->get_height() };
-				SDL_RenderFillRect(_renderer, &rect);
-			}
-		}
-	}
-	/*
-	SDL_Rect rect = { 512, 384, 50, 50 };
-	SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0xFF, 0xFF);
-	SDL_RenderFillRect(_renderer, &rect);
-	rect.y += 50;
-	SDL_SetRenderDrawColor(_renderer, 0x00, 0xFF, 0x00, 0xFF);
-	SDL_RenderFillRect(_renderer, &rect);
-	rect.y += 50;
-	SDL_SetRenderDrawColor(_renderer, 0xFF, 0x00, 0x00, 0xFF);
-	SDL_RenderFillRect(_renderer, &rect);
-	*/
 	SDL_RenderPresent(_renderer);
 }
 

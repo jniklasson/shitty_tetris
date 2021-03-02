@@ -12,6 +12,7 @@ enum class GameState {
 class Game {
     public:
 	Game();
+	Game(int w, int h);
 	~Game();
 
 	void run();
@@ -27,6 +28,6 @@ class Game {
 	int _screen_width;
 	int _screen_height;
 	GameState _game_state;
-	Board _board;
+	Board *_board;
 	Piece *_active_piece;
 };
