@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <SDL2/SDL_render.h>
 
 enum class Tetromino {
 	I_TETROMINO,
@@ -27,18 +28,19 @@ class Piece {
 	Piece &set_x_position(int pos_x);
 	Piece &set_y_position(int pos_y);
 	Piece &set_rotation(Rotation rot);
-	int get_width();
-	int get_height();
+	int get_block_width();
+	int get_block_height();
 	int get_x_position();
 	int get_y_position();
 	Rotation get_rotation();
 	char get_block(int x, int y);
 	Tetromino get_type();
 	Rotation rotate();
+	void render(SDL_Renderer *renderer);
 
     private:
-	const int _width = 50;
-	const int _height = 50;
+	const int _block_width = 50;
+	const int _block_height = 50;
 	Tetromino _type;
 	int _pos_x;
 	int _pos_y;

@@ -10,7 +10,7 @@ Piece::Piece()
 Piece::Piece(Tetromino type)
 {
 	_pos_x = 368;
-	_pos_y = -2 * _width;
+	_pos_y = -2 * _block_width;
 	_type = type;
 	_rotation = Rotation::ROT_0;
 	switch (type) {
@@ -97,13 +97,13 @@ Piece &Piece::set_rotation(Rotation rot)
 	_rotation = rot;
 	return *this;
 }
-int Piece::get_width()
+int Piece::get_block_width()
 {
-	return _width;
+	return _block_width;
 }
-int Piece::get_height()
+int Piece::get_block_height()
 {
-	return _height;
+	return _block_height;
 }
 int Piece::get_x_position()
 {
@@ -160,4 +160,47 @@ Rotation Piece::rotate()
 		break;
 	}
 	return _rotation;
+}
+
+void Piece::render(SDL_Renderer *renderer)
+
+{
+	switch (_type) {
+	case Tetromino::I_TETROMINO:
+		SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0xFF, 0xFF);
+		break;
+	case Tetromino::O_TETROMINO:
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF);
+		break;
+	case Tetromino::T_TETROMINO:
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0xFF, 0xFF);
+		break;
+	case Tetromino::J_TETROMINO:
+		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
+		break;
+	case Tetromino::L_TETROMINO:
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0x7F, 0x50, 0xFF);
+		break;
+	case Tetromino::S_TETROMINO:
+		SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
+		break;
+	case Tetromino::Z_TETROMINO:
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+		break;
+
+	default:
+		break;
+	}
+	int x, y;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (this->get_block(i, j) != '.') {
+				x = _pos_x + i * _block_width;
+				y = _pos_y + j * _block_height;
+				SDL_Rect rect = { x, y, _block_width,
+						  _block_height };
+				SDL_RenderFillRect(renderer, &rect);
+			}
+		}
+	}
 }
