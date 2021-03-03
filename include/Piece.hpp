@@ -39,8 +39,7 @@ class Piece {
 	void render(SDL_Renderer *renderer);
 
     private:
-	const int _block_width = 50;
-	const int _block_height = 50;
+	const int _BLOCK_SIZE = 32;
 	Tetromino _type;
 	int _pos_x;
 	int _pos_y;

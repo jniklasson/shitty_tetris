@@ -9,8 +9,8 @@ Piece::Piece()
 
 Piece::Piece(Tetromino type)
 {
-	_pos_x = 368;
-	_pos_y = -2 * _block_width;
+	_pos_x = _BLOCK_SIZE * 3;
+	_pos_y = -2 * _BLOCK_SIZE;
 	_type = type;
 	_rotation = Rotation::ROT_0;
 	switch (type) {
@@ -67,29 +67,12 @@ Piece::~Piece()
 
 Piece &Piece::set_x_position(int pos_x)
 {
-	SDL_DisplayMode DM;
-	SDL_GetCurrentDisplayMode(0, &DM);
-	if (pos_x >= DM.w) {
-		_pos_x = DM.w;
-	} else if (pos_x <= 0) {
-		_pos_x = 0;
-	} else {
-		_pos_x = pos_x;
-	}
-
+	_pos_x = pos_x;
 	return *this;
 }
 Piece &Piece::set_y_position(int pos_y)
 {
-	SDL_DisplayMode DM;
-	SDL_GetCurrentDisplayMode(0, &DM);
-	if (pos_y >= DM.h) {
-		_pos_y = DM.h;
-	} else if (pos_y <= 0) {
-		_pos_y = 0;
-	} else {
-		_pos_y = pos_y;
-	}
+	_pos_y = pos_y;
 	return *this;
 }
 Piece &Piece::set_rotation(Rotation rot)
@@ -99,11 +82,11 @@ Piece &Piece::set_rotation(Rotation rot)
 }
 int Piece::get_block_width()
 {
-	return _block_width;
+	return _BLOCK_SIZE;
 }
 int Piece::get_block_height()
 {
-	return _block_height;
+	return _BLOCK_SIZE;
 }
 int Piece::get_x_position()
 {
@@ -195,10 +178,10 @@ void Piece::render(SDL_Renderer *renderer)
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			if (this->get_block(i, j) != '.') {
-				x = _pos_x + i * _block_width;
-				y = _pos_y + j * _block_height;
-				SDL_Rect rect = { x, y, _block_width,
-						  _block_height };
+				x = _pos_x + i * _BLOCK_SIZE;
+				y = _pos_y + j * _BLOCK_SIZE;
+				SDL_Rect rect = { x, y, _BLOCK_SIZE,
+						  _BLOCK_SIZE };
 				SDL_RenderFillRect(renderer, &rect);
 			}
 		}

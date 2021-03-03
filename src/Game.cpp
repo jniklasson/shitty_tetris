@@ -97,7 +97,7 @@ void Game::render()
 	SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(_renderer);
 	_active_piece->render(_renderer);
-
+	_board->render(_renderer);
 	SDL_RenderPresent(_renderer);
 }
 
