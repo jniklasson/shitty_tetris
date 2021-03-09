@@ -66,14 +66,10 @@ void Game::update()
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym) {
 			case SDLK_LEFT:
-				_active_piece->set_x_position(
-					_active_piece->get_x_position() -
-					_active_piece->get_block_width());
+
 				break;
 			case SDLK_RIGHT:
-				_active_piece->set_x_position(
-					_active_piece->get_x_position() +
-					_active_piece->get_block_width());
+
 				break;
 			case SDLK_x:
 				_active_piece->rotate();

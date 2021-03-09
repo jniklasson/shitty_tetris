@@ -30,4 +30,6 @@ class Game {
 	GameState _game_state;
 	Board *_board;
 	Piece *_active_piece;
+	const int _BOARD_WIDTH = 12;
+	const int _BOARD_HEIGHT = 24;
 };

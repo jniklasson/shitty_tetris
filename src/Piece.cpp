@@ -15,45 +15,45 @@ Piece::Piece(Tetromino type)
 	_rotation = Rotation::ROT_0;
 	switch (type) {
 	case Tetromino::I_TETROMINO:
-		_blocks.append("..#.");
-		_blocks.append("..#.");
-		_blocks.append("..#.");
-		_blocks.append("..#.");
+		_blocks.append("#...");
+		_blocks.append("#...");
+		_blocks.append("#...");
+		_blocks.append("#...");
 		break;
 	case Tetromino::O_TETROMINO:
+		_blocks.append("##..");
+		_blocks.append("##..");
 		_blocks.append("....");
-		_blocks.append(".##.");
-		_blocks.append(".##.");
 		_blocks.append("....");
 		break;
 	case Tetromino::T_TETROMINO:
+		_blocks.append("###.");
+		_blocks.append(".#..");
 		_blocks.append("....");
-		_blocks.append("..#.");
-		_blocks.append(".##.");
-		_blocks.append("..#.");
+		_blocks.append("....");
 		break;
 	case Tetromino::J_TETROMINO:
+		_blocks.append(".#..");
+		_blocks.append(".#..");
+		_blocks.append("##..");
 		_blocks.append("....");
-		_blocks.append("..#.");
-		_blocks.append("..#.");
-		_blocks.append(".##.");
 		break;
 	case Tetromino::L_TETROMINO:
+		_blocks.append("#...");
+		_blocks.append("#...");
+		_blocks.append("##..");
 		_blocks.append("....");
-		_blocks.append(".#..");
-		_blocks.append(".#..");
-		_blocks.append(".##.");
 		break;
 	case Tetromino::S_TETROMINO:
-		_blocks.append("....");
-		_blocks.append("..##");
 		_blocks.append(".##.");
+		_blocks.append("##..");
+		_blocks.append("....");
 		_blocks.append("....");
 		break;
 	case Tetromino::Z_TETROMINO:
-		_blocks.append("....");
+		_blocks.append("##..");
 		_blocks.append(".##.");
-		_blocks.append("..##");
+		_blocks.append("....");
 		_blocks.append("....");
 		break;
 	default:

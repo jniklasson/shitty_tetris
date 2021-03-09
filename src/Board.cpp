@@ -5,30 +5,39 @@ Board::Board(int w, int h)
 {
 	_width = w;
 	_height = h;
+	int num_blocks = 0;
+	for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
+			if ((y == 0) || (y == h - 1) || (x == 0) ||
+			    (x == w - 1)) {
+				_blocks.push_back('#');
+				num_blocks++;
+			} else {
+				_blocks.push_back('.');
+			}
+		}
+	}
 }
 Board::~Board()
 {
 }
+
+char Board::get_block(int x, int y)
+{
+	return _blocks[(y * _width) + x];
+}
+
 void Board::render(SDL_Renderer *renderer)
 {
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
 	for (int y = 0; y < _height; y++) {
-		SDL_Rect vert_left = { 0, y * _BLOCK_SIZE, _BLOCK_SIZE,
-				       _BLOCK_SIZE };
-		SDL_RenderFillRect(renderer, &vert_left);
-		SDL_Rect vert_right = { _width * _BLOCK_SIZE, y * _BLOCK_SIZE,
-					_BLOCK_SIZE, _BLOCK_SIZE };
-		SDL_RenderFillRect(renderer, &vert_right);
-	}
-
-	for (int x = 0; x < _width; x++) {
-		SDL_Rect vert_left = { x * _BLOCK_SIZE, 0, _BLOCK_SIZE,
-				       _BLOCK_SIZE };
-		SDL_RenderFillRect(renderer, &vert_left);
-		SDL_Rect vert_right = { x * _BLOCK_SIZE,
-					(_height - 1) * _BLOCK_SIZE,
-					_BLOCK_SIZE, _BLOCK_SIZE };
-		SDL_RenderFillRect(renderer, &vert_right);
+		for (int x = 0; x < _width; x++) {
+			if (this->get_block(x, y) == '#') {
+				SDL_Rect rect = { x * _BLOCK_SIZE,
+						  y * _BLOCK_SIZE, _BLOCK_SIZE,
+						  _BLOCK_SIZE };
+				SDL_RenderFillRect(renderer, &rect);
+			}
+		}
 	}
 }

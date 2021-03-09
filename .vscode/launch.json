@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/${workspaceFolderBasename}",
             "args": [],
-            "stopAtEntry": false,
+            "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
@@ -22,7 +22,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: cpp build active file",
+            //"preLaunchTask": "C/C++: cpp build active file",
             "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
