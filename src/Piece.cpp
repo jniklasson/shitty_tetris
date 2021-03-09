@@ -9,8 +9,8 @@ Piece::Piece()
 
 Piece::Piece(Tetromino type)
 {
-	_pos_x = _BLOCK_SIZE * 3;
-	_pos_y = -2 * _BLOCK_SIZE;
+	_pos_x = _BLOCK_SIZE * 4;
+	_pos_y = 0;
 	_type = type;
 	_rotation = Rotation::ROT_0;
 	switch (type) {

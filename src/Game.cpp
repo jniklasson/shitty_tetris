@@ -14,8 +14,8 @@ Game::Game()
 {
 	_window = nullptr;
 	_renderer = nullptr;
-	_screen_width = 1024;
-	_screen_height = 768;
+	_screen_width = 768;
+	_screen_height = 1024;
 	_game_state = GameState::RUNNING;
 }
 
@@ -46,7 +46,8 @@ void Game::init()
 
 	_window = SDL_CreateWindow("Shitty Tetris", SDL_WINDOWPOS_CENTERED,
 				   SDL_WINDOWPOS_CENTERED, _screen_width,
-				   _screen_height, SDL_WINDOW_SHOWN);
+				   _screen_height,
+				   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (_window == nullptr) {
 		fatalError("SDL Window could not be created");
 	}
@@ -66,10 +67,8 @@ void Game::update()
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym) {
 			case SDLK_LEFT:
-
 				break;
 			case SDLK_RIGHT:
-
 				break;
 			case SDLK_x:
 				_active_piece->rotate();

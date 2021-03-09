@@ -3,13 +3,13 @@
 
 Board::Board(int w, int h)
 {
-	_width = w;
-	_height = h;
+	_width = w + 2;
+	_height = h + 2;
 	int num_blocks = 0;
-	for (int y = 0; y < h; y++) {
-		for (int x = 0; x < w; x++) {
-			if ((y == 0) || (y == h - 1) || (x == 0) ||
-			    (x == w - 1)) {
+	for (int y = 0; y < _height; y++) {
+		for (int x = 0; x < _width; x++) {
+			if ((y == 0) || (y == _height - 1) || (x == 0) ||
+			    (x == _width - 1)) {
 				_blocks.push_back('#');
 				num_blocks++;
 			} else {
