@@ -28,6 +28,7 @@ class Piece {
 	Piece &set_x_position(int pos_x);
 	Piece &set_y_position(int pos_y);
 	Piece &set_rotation(Rotation rot);
+	Piece &move(int dx, int dy);
 	int get_block_width();
 	int get_block_height();
 	int get_x_position();

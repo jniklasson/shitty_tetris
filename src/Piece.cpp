@@ -80,6 +80,12 @@ Piece &Piece::set_rotation(Rotation rot)
 	_rotation = rot;
 	return *this;
 }
+Piece &Piece::move(int dx, int dy)
+{
+	_pos_x += dx * _BLOCK_SIZE;
+	_pos_y += dy * _BLOCK_SIZE;
+	return *this;
+}
 int Piece::get_block_width()
 {
 	return _BLOCK_SIZE;

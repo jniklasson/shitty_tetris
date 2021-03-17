@@ -10,6 +10,28 @@ void fatalError(std::string errorString)
 	SDL_Quit();
 }
 
+bool validPos(Piece *piece, Board *board, int dx, int dy)
+{
+	int x_pos = piece->get_x_position() / piece->get_block_width();
+	int y_pos = piece->get_y_position() / piece->get_block_height();
+
+	for (int y = 0; y < 4; y++) {
+		for (int x = 0; x < 4; x++) {
+			std::cout << board->get_block(x_pos + x + dx,
+						      y_pos + y + dy);
+			if (piece->get_block(x, y) == '#') {
+				if (board->get_block(x_pos + x + dx,
+						     y_pos + y + dy) != '.') {
+					return false;
+				}
+			}
+		}
+		std::cout << std::endl;
+	}
+
+	return true;
+}
+
 Game::Game()
 {
 	_window = nullptr;
@@ -67,8 +89,14 @@ void Game::update()
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym) {
 			case SDLK_LEFT:
+				if (validPos(_active_piece, _board, -1, 0)) {
+					_active_piece->move(-1, 0);
+				}
 				break;
 			case SDLK_RIGHT:
+				if (validPos(_active_piece, _board, 1, 0)) {
+					_active_piece->move(1, 0);
+				}
 				break;
 			case SDLK_x:
 				_active_piece->rotate();
@@ -76,14 +104,13 @@ void Game::update()
 			}
 		}
 	}
-	if (_active_piece->get_y_position() > 768) {
+	if (!validPos(_active_piece, _board, 0, 1)) {
 		delete _active_piece;
 		_active_piece = new Piece(static_cast<Tetromino>(
 			rand() %
 			static_cast<int>(Tetromino::NUMBER_OF_TETROMINOS)));
 	}
-	_active_piece->set_y_position(_active_piece->get_y_position() +
-				      _active_piece->get_block_height());
+	_active_piece->move(0, 1);
 }
 
 void Game::render()
