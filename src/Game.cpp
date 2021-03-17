@@ -1,7 +1,7 @@
 #include "Game.hpp"
 #include <iostream>
 
-void fatalError(std::string errorString)
+void fatal_error(std::string errorString)
 {
 	std::cout << errorString << std::endl;
 	std::cout << "Press any key to quit..." << std::endl;
@@ -10,14 +10,14 @@ void fatalError(std::string errorString)
 	SDL_Quit();
 }
 
-bool validPos(Piece *piece, Board *board, int dx, int dy)
+bool valid_pos(Piece *piece, Board *board, int dx, int dy)
 {
 	int x_pos = piece->get_x_position() / piece->get_block_width();
 	int y_pos = piece->get_y_position() / piece->get_block_height();
 
 	for (int y = 0; y < 4; y++) {
 		for (int x = 0; x < 4; x++) {
-			if (piece->get_block(x, y) == '#') {
+			if (piece->get_block(x, y) != '.') {
 				if (board->get_block(x_pos + x + dx,
 						     y_pos + y + dy) != '.') {
 					return false;
@@ -29,6 +29,37 @@ bool validPos(Piece *piece, Board *board, int dx, int dy)
 	return true;
 }
 
+bool Game::check_input(SDL_Event e)
+{
+	switch (e.type) {
+	case SDL_QUIT:
+		_game_state = GameState::EXIT;
+		break;
+	case SDL_KEYDOWN:
+		switch (e.key.keysym.sym) {
+		case SDLK_LEFT:
+			if (valid_pos(_active_piece, _board, -1, 0)) {
+				_active_piece->move(-1, 0);
+			}
+			break;
+		case SDLK_RIGHT:
+			if (valid_pos(_active_piece, _board, 1, 0)) {
+				_active_piece->move(1, 0);
+			}
+			break;
+		case SDLK_DOWN:
+			return true;
+			break;
+		case SDLK_x:
+			_active_piece->rotate(1);
+			if (!valid_pos(_active_piece, _board, 0, 0)) {
+				_active_piece->rotate(-1);
+			}
+			break;
+		}
+	}
+	return false;
+}
 Game::Game()
 {
 	_window = nullptr;
@@ -72,7 +103,7 @@ void Game::init()
 				   _screen_height,
 				   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (_window == nullptr) {
-		fatalError("SDL Window could not be created");
+		fatal_error("SDL Window could not be created");
 	}
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 	_board = new Board(10, 24);
@@ -84,44 +115,16 @@ void Game::update()
 	bool move_down = false;
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
-		switch (e.type) {
-		case SDL_QUIT:
-			_game_state = GameState::EXIT;
-			break;
-		case SDL_KEYDOWN:
-			switch (e.key.keysym.sym) {
-			case SDLK_LEFT:
-				if (validPos(_active_piece, _board, -1, 0)) {
-					_active_piece->move(-1, 0);
-				}
-				break;
-			case SDLK_RIGHT:
-				if (validPos(_active_piece, _board, 1, 0)) {
-					_active_piece->move(1, 0);
-				}
-				break;
-			case SDLK_DOWN:
-				move_down = true;
-				break;
-			case SDLK_x:
-				_active_piece->rotate(1);
-				if (!validPos(_active_piece, _board, 0, 0)) {
-					_active_piece->rotate(-1);
-				}
-				break;
-			}
-		}
+		move_down = check_input(e);
 	}
-
 	if (_ticks == _game_speed) {
 		move_down = true;
 		_ticks = 0;
 	} else {
 		_ticks++;
 	}
-
 	if (move_down) {
-		if (validPos(_active_piece, _board, 0, 1)) {
+		if (valid_pos(_active_piece, _board, 0, 1)) {
 			_active_piece->move(0, 1);
 		} else {
 			_board->add_piece(_active_piece);
