@@ -17,8 +17,6 @@ bool validPos(Piece *piece, Board *board, int dx, int dy)
 
 	for (int y = 0; y < 4; y++) {
 		for (int x = 0; x < 4; x++) {
-			std::cout << board->get_block(x_pos + x + dx,
-						      y_pos + y + dy);
 			if (piece->get_block(x, y) == '#') {
 				if (board->get_block(x_pos + x + dx,
 						     y_pos + y + dy) != '.') {
@@ -26,7 +24,6 @@ bool validPos(Piece *piece, Board *board, int dx, int dy)
 				}
 			}
 		}
-		std::cout << std::endl;
 	}
 
 	return true;
@@ -39,6 +36,8 @@ Game::Game()
 	_screen_width = 768;
 	_screen_height = 1024;
 	_game_state = GameState::RUNNING;
+	_ticks = 0;
+	_game_speed = 20;
 }
 
 Game::Game(int w, int h)
@@ -48,6 +47,8 @@ Game::Game(int w, int h)
 	_screen_width = w;
 	_screen_height = h;
 	_game_state = GameState::RUNNING;
+	_ticks = 0;
+	_game_speed = 20;
 }
 
 Game::~Game()
@@ -80,6 +81,7 @@ void Game::init()
 }
 void Game::update()
 {
+	bool move_down = false;
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
@@ -98,19 +100,39 @@ void Game::update()
 					_active_piece->move(1, 0);
 				}
 				break;
+			case SDLK_DOWN:
+				move_down = true;
+				break;
 			case SDLK_x:
-				_active_piece->rotate();
+				_active_piece->rotate(1);
+				if (!validPos(_active_piece, _board, 0, 0)) {
+					_active_piece->rotate(-1);
+				}
 				break;
 			}
 		}
 	}
-	if (!validPos(_active_piece, _board, 0, 1)) {
-		delete _active_piece;
-		_active_piece = new Piece(static_cast<Tetromino>(
-			rand() %
-			static_cast<int>(Tetromino::NUMBER_OF_TETROMINOS)));
+
+	if (_ticks == _game_speed) {
+		move_down = true;
+		_ticks = 0;
+	} else {
+		_ticks++;
 	}
-	_active_piece->move(0, 1);
+
+	if (move_down) {
+		if (validPos(_active_piece, _board, 0, 1)) {
+			_active_piece->move(0, 1);
+		} else {
+			_board->add_piece(_active_piece);
+			delete _active_piece;
+			_active_piece = new Piece(static_cast<Tetromino>(
+				rand() %
+				static_cast<int>(
+					Tetromino::NUMBER_OF_TETROMINOS)));
+		}
+	}
+	move_down = false;
 }
 
 void Game::render()
@@ -128,6 +150,6 @@ void Game::gameLoop()
 	while (_game_state != GameState::EXIT) {
 		update();
 		render();
-		SDL_Delay(200);
+		SDL_Delay(50);
 	}
 }

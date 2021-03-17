@@ -15,45 +15,45 @@ Piece::Piece(Tetromino type)
 	_rotation = Rotation::ROT_0;
 	switch (type) {
 	case Tetromino::I_TETROMINO:
-		_blocks.append("#...");
-		_blocks.append("#...");
-		_blocks.append("#...");
-		_blocks.append("#...");
+		_blocks.append(".#..");
+		_blocks.append(".#..");
+		_blocks.append(".#..");
+		_blocks.append(".#..");
 		break;
 	case Tetromino::O_TETROMINO:
-		_blocks.append("##..");
-		_blocks.append("##..");
 		_blocks.append("....");
+		_blocks.append(".##.");
+		_blocks.append(".##.");
 		_blocks.append("....");
 		break;
 	case Tetromino::T_TETROMINO:
-		_blocks.append("###.");
 		_blocks.append(".#..");
-		_blocks.append("....");
+		_blocks.append(".##.");
+		_blocks.append(".#..");
 		_blocks.append("....");
 		break;
 	case Tetromino::J_TETROMINO:
-		_blocks.append(".#..");
-		_blocks.append(".#..");
-		_blocks.append("##..");
+		_blocks.append("..#.");
+		_blocks.append("..#.");
+		_blocks.append(".##.");
 		_blocks.append("....");
 		break;
 	case Tetromino::L_TETROMINO:
-		_blocks.append("#...");
-		_blocks.append("#...");
-		_blocks.append("##..");
+		_blocks.append(".#..");
+		_blocks.append(".#..");
+		_blocks.append(".##.");
 		_blocks.append("....");
 		break;
 	case Tetromino::S_TETROMINO:
+		_blocks.append("....");
 		_blocks.append(".##.");
 		_blocks.append("##..");
-		_blocks.append("....");
 		_blocks.append("....");
 		break;
 	case Tetromino::Z_TETROMINO:
+		_blocks.append("....");
 		_blocks.append("##..");
 		_blocks.append(".##.");
-		_blocks.append("....");
 		_blocks.append("....");
 		break;
 	default:
@@ -132,20 +132,20 @@ Tetromino Piece::get_type()
 	return _type;
 }
 
-Rotation Piece::rotate()
+Rotation Piece::rotate(int dir)
 {
 	switch (_rotation) {
 	case Rotation::ROT_0:
-		_rotation = Rotation::ROT_90;
+		_rotation = dir >= 0 ? Rotation::ROT_90 : Rotation::ROT_270;
 		break;
 	case Rotation::ROT_90:
-		_rotation = Rotation::ROT_180;
+		_rotation = dir >= 0 ? Rotation::ROT_180 : Rotation::ROT_0;
 		break;
 	case Rotation::ROT_180:
-		_rotation = Rotation::ROT_270;
+		_rotation = dir >= 0 ? Rotation::ROT_270 : Rotation::ROT_90;
 		break;
 	case Rotation::ROT_270:
-		_rotation = Rotation::ROT_0;
+		_rotation = dir >= 0 ? Rotation::ROT_0 : Rotation::ROT_180;
 		break;
 	}
 	return _rotation;

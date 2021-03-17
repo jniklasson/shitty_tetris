@@ -28,6 +28,8 @@ class Game {
 	int _screen_width;
 	int _screen_height;
 	GameState _game_state;
+	int _ticks;
+	int _game_speed;
 	Board *_board;
 	Piece *_active_piece;
 	const int _BOARD_WIDTH = 12;

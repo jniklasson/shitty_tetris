@@ -36,7 +36,7 @@ class Piece {
 	Rotation get_rotation();
 	char get_block(int x, int y);
 	Tetromino get_type();
-	Rotation rotate();
+	Rotation rotate(int dir);
 	void render(SDL_Renderer *renderer);
 
     private:
