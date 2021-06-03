@@ -12,8 +12,8 @@ void fatal_error(std::string errorString)
 
 bool valid_pos(Piece *piece, Board *board, int dx, int dy)
 {
-	int x_pos = piece->get_x_position() / piece->get_block_width();
-	int y_pos = piece->get_y_position() / piece->get_block_height();
+	int x_pos = piece->get_x_position();
+	int y_pos = piece->get_y_position();
 
 	for (int y = 0; y < 4; y++) {
 		for (int x = 0; x < 4; x++) {
@@ -128,6 +128,7 @@ void Game::update()
 			_active_piece->move(0, 1);
 		} else {
 			_board->add_piece(_active_piece);
+			_board->check_rows(_active_piece);
 			delete _active_piece;
 			_active_piece = new Piece(static_cast<Tetromino>(
 				rand() %

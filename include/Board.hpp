@@ -11,6 +11,8 @@ class Board {
 	~Board();
 	char get_block(int x, int y);
 	Board &add_piece(Piece *piece);
+	int check_rows(Piece *piece);
+	int delete_row(int pos_y);
 	void render(SDL_Renderer *renderer);
 
     private:

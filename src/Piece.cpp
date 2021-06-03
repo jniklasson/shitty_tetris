@@ -9,8 +9,8 @@ Piece::Piece()
 
 Piece::Piece(Tetromino type)
 {
-	_pos_x = _BLOCK_SIZE * 4;
-	_pos_y = 0;
+	this->set_x_position(4);
+	this->set_y_position(0);
 	_type = type;
 	_rotation = Rotation::ROT_0;
 	switch (type) {
@@ -82,8 +82,8 @@ Piece &Piece::set_rotation(Rotation rot)
 }
 Piece &Piece::move(int dx, int dy)
 {
-	_pos_x += dx * _BLOCK_SIZE;
-	_pos_y += dy * _BLOCK_SIZE;
+	_pos_x += dx;
+	_pos_y += dy;
 	return *this;
 }
 int Piece::get_block_width()
@@ -184,8 +184,8 @@ void Piece::render(SDL_Renderer *renderer)
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			if (this->get_block(i, j) != '.') {
-				x = _pos_x + i * _BLOCK_SIZE;
-				y = _pos_y + j * _BLOCK_SIZE;
+				x = (_pos_x + i) * _BLOCK_SIZE;
+				y = (_pos_y + j) * _BLOCK_SIZE;
 				SDL_Rect rect = { x, y, _BLOCK_SIZE,
 						  _BLOCK_SIZE };
 				SDL_RenderFillRect(renderer, &rect);

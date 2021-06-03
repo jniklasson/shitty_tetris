@@ -34,7 +34,7 @@ void set_block_color(char c, SDL_Renderer *renderer)
 
 		break;
 	default:
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(renderer, 0x33, 0x33, 0x33, 0xFF);
 		break;
 	}
 }
@@ -67,8 +67,8 @@ char Board::get_block(int x, int y)
 
 Board &Board::add_piece(Piece *piece)
 {
-	int x_pos = piece->get_x_position() / _BLOCK_SIZE;
-	int y_pos = piece->get_y_position() / _BLOCK_SIZE;
+	int x_pos = piece->get_x_position();
+	int y_pos = piece->get_y_position();
 	for (int y = 0; y < 4; y++) {
 		for (int x = 0; x < 4; x++) {
 			if (piece->get_block(x, y) != '.') {
@@ -78,6 +78,48 @@ Board &Board::add_piece(Piece *piece)
 		}
 	}
 	return *this;
+}
+
+int Board::check_rows(Piece *piece)
+{
+	int num_rows = 0;
+	int num_blocks = 0;
+	int px = piece->get_x_position();
+	int py = piece->get_y_position();
+	char block = '.';
+	for (int y = 0; y < 4; y++) {
+		if (py + y == _height - 1) {
+			break;
+		}
+		for (int x = 1; x < _width - 1; x++) {
+			block = _blocks[((py + y) * _width) + x];
+			if (block == '.' || block == '#') {
+				break;
+			} else {
+				num_blocks++;
+			}
+		}
+		if (num_blocks == _width - 2) {
+			num_rows++;
+			delete_row((py + y));
+		}
+		num_blocks = 0;
+	}
+	return num_rows;
+}
+
+int Board::delete_row(int pos_y)
+{
+	int start_row;
+	int row_above;
+	for (int y = pos_y; y > 1; y--) {
+		start_row = (_width * y);
+		row_above = (_width * (y - 1));
+		for (int x = 1; x < _width - 1; x++) {
+			_blocks[start_row + x] = _blocks[row_above + x];
+		}
+	}
+	return 0;
 }
 
 void Board::render(SDL_Renderer *renderer)
