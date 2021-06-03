@@ -16,6 +16,7 @@ class Game {
 	~Game();
 
 	void run();
+	unsigned int get_score();
 
     private:
 	void init();
@@ -33,6 +34,7 @@ class Game {
 	int _game_speed;
 	Board *_board;
 	Piece *_active_piece;
+	unsigned int _score;
 	const int _BOARD_WIDTH = 12;
 	const int _BOARD_HEIGHT = 24;
 };

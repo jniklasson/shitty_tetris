@@ -93,6 +93,12 @@ void Game::run()
 	init();
 	gameLoop();
 }
+
+unsigned int Game::get_score()
+{
+	return _score;
+}
+
 void Game::init()
 {
 	// Init SDL
@@ -109,6 +115,7 @@ void Game::init()
 	_board = new Board(10, 24);
 	_active_piece = new Piece(static_cast<Tetromino>(
 		rand() % static_cast<int>(Tetromino::NUMBER_OF_TETROMINOS)));
+	_score = 0;
 }
 void Game::update()
 {
@@ -128,7 +135,9 @@ void Game::update()
 			_active_piece->move(0, 1);
 		} else {
 			_board->add_piece(_active_piece);
-			_board->check_rows(_active_piece);
+			_score +=
+				25 + (_board->check_rows(_active_piece) * 100);
+			std::cout << "Current score: " << _score << std::endl;
 			delete _active_piece;
 			_active_piece = new Piece(static_cast<Tetromino>(
 				rand() %
