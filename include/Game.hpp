@@ -24,7 +24,6 @@ class Game {
 	void gameLoop();
 	void render();
 	bool check_input(SDL_Event e);
-
 	SDL_Window *_window;
 	SDL_Renderer *_renderer;
 	int _screen_width;

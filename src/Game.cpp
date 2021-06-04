@@ -102,8 +102,8 @@ unsigned int Game::get_score()
 void Game::init()
 {
 	// Init SDL
+	srand(time(0));
 	SDL_Init(SDL_INIT_EVERYTHING);
-
 	_window = SDL_CreateWindow("Shitty Tetris", SDL_WINDOWPOS_CENTERED,
 				   SDL_WINDOWPOS_CENTERED, _screen_width,
 				   _screen_height,
