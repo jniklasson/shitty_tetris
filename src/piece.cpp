@@ -1,4 +1,4 @@
-#include "Piece.hpp"
+#include "piece.hpp"
 #include <SDL2/SDL.h>
 
 Piece::Piece()

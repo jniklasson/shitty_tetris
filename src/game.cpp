@@ -1,4 +1,4 @@
-#include "Game.hpp"
+#include "game.hpp"
 #include <iostream>
 
 void fatal_error(std::string errorString)

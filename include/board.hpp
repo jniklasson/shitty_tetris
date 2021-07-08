@@ -2,7 +2,7 @@
 #include <string>
 #include <SDL2/SDL_render.h>
 
-#include "Piece.hpp"
+#include "piece.hpp"
 
 class Board {
     public:

@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include <Piece.hpp>
-#include <Board.hpp>
+#include <piece.hpp>
+#include <board.hpp>
 #include <vector>
 
 enum class GameState {

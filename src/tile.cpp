@@ -1,4 +1,4 @@
-#include "Tile.hpp"
+#include "tile.hpp"
 
 Tile::Tile(int size)
 {

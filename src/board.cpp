@@ -1,4 +1,4 @@
-#include "Board.hpp"
+#include "board.hpp"
 #include <iostream>
 void set_block_color(char c, SDL_Renderer *renderer)
 {
