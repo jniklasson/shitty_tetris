@@ -94,11 +94,6 @@ void Game::run()
 	gameLoop();
 }
 
-unsigned int Game::get_score()
-{
-	return _score;
-}
-
 void Game::init()
 {
 	// Init SDL
@@ -111,11 +106,12 @@ void Game::init()
 	if (_window == nullptr) {
 		fatal_error("SDL Window could not be created");
 	}
+	TTF_Init();
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 	_board = new Board(10, 24);
 	_active_piece = new Piece(static_cast<Tetromino>(
 		rand() % static_cast<int>(Tetromino::NUMBER_OF_TETROMINOS)));
-	_score = 0;
+	_score = new Score(30, 30);
 }
 void Game::update()
 {
@@ -135,9 +131,10 @@ void Game::update()
 			_active_piece->move(0, 1);
 		} else {
 			_board->add_piece(_active_piece);
-			_score +=
-				25 + (_board->check_rows(_active_piece) * 100);
-			std::cout << "Current score: " << _score << std::endl;
+			_score->add(25 +
+				    (_board->check_rows(_active_piece) * 100));
+			// _score +=
+			// 	25 + (_board->check_rows(_active_piece) * 100);
 			delete _active_piece;
 			_active_piece = new Piece(static_cast<Tetromino>(
 				rand() %
@@ -155,6 +152,7 @@ void Game::render()
 	SDL_RenderClear(_renderer);
 	_active_piece->render(_renderer);
 	_board->render(_renderer);
+	_score->render(_renderer);
 	SDL_RenderPresent(_renderer);
 }
 

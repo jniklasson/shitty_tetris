@@ -1,8 +1,9 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include <piece.hpp>
-#include <board.hpp>
+#include "piece.hpp"
+#include "board.hpp"
 #include <vector>
+#include "score.hpp"
 
 enum class GameState {
 	RUNNING,
@@ -33,7 +34,7 @@ class Game {
 	int _game_speed;
 	Board *_board;
 	Piece *_active_piece;
-	unsigned int _score;
+	Score *_score;
 	const int _BOARD_WIDTH = 12;
 	const int _BOARD_HEIGHT = 24;
 };
