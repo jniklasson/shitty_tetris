@@ -8,6 +8,7 @@ class Score {
 	Score(int w, int h);
 	void render(SDL_Renderer *renderer);
 	Score &add(int val);
+	uint32_t get_score();
 
     private:
 	uint32_t _score;

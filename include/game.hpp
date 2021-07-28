@@ -7,6 +7,7 @@
 
 enum class GameState {
 	RUNNING,
+	GAME_OVER,
 	EXIT,
 };
 
@@ -17,7 +18,6 @@ class Game {
 	~Game();
 
 	void run();
-	unsigned int get_score();
 
     private:
 	void init();

@@ -130,11 +130,12 @@ void Game::update()
 		if (valid_pos(_active_piece, _board, 0, 1)) {
 			_active_piece->move(0, 1);
 		} else {
+			if (_active_piece->get_y_position() <= 1) {
+				_game_state = GameState::GAME_OVER;
+			}
 			_board->add_piece(_active_piece);
 			_score->add(25 +
 				    (_board->check_rows(_active_piece) * 100));
-			// _score +=
-			// 	25 + (_board->check_rows(_active_piece) * 100);
 			delete _active_piece;
 			_active_piece = new Piece(static_cast<Tetromino>(
 				rand() %
@@ -159,8 +160,14 @@ void Game::render()
 void Game::gameLoop()
 {
 	while (_game_state != GameState::EXIT) {
-		update();
-		render();
-		SDL_Delay(50);
+		if (_game_state == GameState::RUNNING) {
+			update();
+			render();
+			SDL_Delay(50);
+		} else {
+			std::cout << "Game over. Score: " << _score->get_score()
+				  << std::endl;
+			_game_state = GameState::EXIT;
+		}
 	}
 }
